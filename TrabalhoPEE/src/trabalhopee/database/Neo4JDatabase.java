@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trabalhopee.BD;
+package trabalhopee.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ import java.sql.ResultSet;
  *
  * @author Cleyton
  */
-public class SQLServerDatabase implements Database{
+public class Neo4JDatabase implements Database{
 
     private String username;
 
@@ -29,7 +29,7 @@ public class SQLServerDatabase implements Database{
 
     private Connection connection;    
 
-    public SQLServerDatabase(String username, String password, String databaseName, String host, int port) {
+    public Neo4JDatabase(String username, String password, String databaseName, String host, int port) {
         this.username = username;
         this.password = password;
         this.databaseName = databaseName;
@@ -37,11 +37,11 @@ public class SQLServerDatabase implements Database{
         this.port = port;
     }
 
-    public SQLServerDatabase(String username, String password, String databaseName, String host) {
+    public Neo4JDatabase(String username, String password, String databaseName, String host) {
         this(username, password, databaseName, host, 3306);
     }
 
-    public SQLServerDatabase(String username, String password, String databaseName) {
+    public Neo4JDatabase(String username, String password, String databaseName) {
         this(username, password, databaseName, "localhost", 3306);
     }
 

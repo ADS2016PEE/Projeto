@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package trabalhopee.BD;
+package trabalhopee.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,7 +15,7 @@ import java.sql.ResultSet;
  *
  * @author Cleyton
  */
-public class PostGreSQLDatabase implements Database{
+public class MySQLDatabase implements Database{
 
     private String username;
 
@@ -29,7 +29,7 @@ public class PostGreSQLDatabase implements Database{
 
     private Connection connection;    
 
-    public PostGreSQLDatabase(String username, String password, String databaseName, String host, int port) {
+    public MySQLDatabase(String username, String password, String databaseName, String host, int port) {
         this.username = username;
         this.password = password;
         this.databaseName = databaseName;
@@ -37,11 +37,11 @@ public class PostGreSQLDatabase implements Database{
         this.port = port;
     }
 
-    public PostGreSQLDatabase(String username, String password, String databaseName, String host) {
+    public MySQLDatabase(String username, String password, String databaseName, String host) {
         this(username, password, databaseName, host, 3306);
     }
 
-    public PostGreSQLDatabase(String username, String password, String databaseName) {
+    public MySQLDatabase(String username, String password, String databaseName) {
         this(username, password, databaseName, "localhost", 3306);
     }
 
@@ -51,7 +51,7 @@ public class PostGreSQLDatabase implements Database{
 
         try {
 
-            Class.forName("org.postgresql.driver");
+            Class.forName("com.mysql.jdbc.Driver");
 
             if (connection != null) {
                 connection.close();
@@ -59,7 +59,7 @@ public class PostGreSQLDatabase implements Database{
 
             this.connection
                     = DriverManager.getConnection(
-                            "jdbc:postgresql://" + this.host + ":" + port + "/" + this.databaseName,
+                            "jdbc:mariadb://" + this.host + ":" + port + "/" + this.databaseName,
                             this.username, this.password);
 
         } catch (Exception e) {

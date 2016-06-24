@@ -1,4 +1,4 @@
-package trabalhopee.BD;
+package trabalhopee.database;
 
 /**
  *
