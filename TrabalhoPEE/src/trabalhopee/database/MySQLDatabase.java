@@ -37,14 +37,6 @@ public class MySQLDatabase implements Database{
         this.port = port;
     }
 
-    public MySQLDatabase(String username, String password, String databaseName, String host) {
-        this(username, password, databaseName, host, 3306);
-    }
-
-    public MySQLDatabase(String username, String password, String databaseName) {
-        this(username, password, databaseName, "localhost", 3306);
-    }
-
     public boolean connect() {
 
         boolean result = true;
@@ -59,7 +51,7 @@ public class MySQLDatabase implements Database{
 
             this.connection
                     = DriverManager.getConnection(
-                            "jdbc:mariadb://" + this.host + ":" + port + "/" + this.databaseName,
+                            "jdbc:mysql://" + this.host + ":" + port + "/" + this.databaseName,
                             this.username, this.password);
 
         } catch (Exception e) {
@@ -70,9 +62,14 @@ public class MySQLDatabase implements Database{
         return result;
     }
 
+    @Override
     public ResultSet query(String sql) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
-        ResultSet result = null;
+    @Override
+    public boolean insert(String sql) {
+        boolean result = true;
 
         try {
 
@@ -80,53 +77,54 @@ public class MySQLDatabase implements Database{
 
                 PreparedStatement statement = this.connection.prepareStatement(sql);
 
-                result = statement.executeQuery();
+                statement.executeUpdate();
 
             } else {
-                throw new Exception("Database is not connected.");
+                throw new Exception("Database não conectado.");
             }
 
         } catch (Exception e) {
+            System.out.println("Erro na execução da inserção");
             e.printStackTrace();
+            result = false;
         }
 
         return result;
-    }
-
-    public boolean disconnect() {
-
-        boolean result = false;
-
-        try {
-
-            if (this.connection != null && !this.connection.isClosed()) {
-                this.connection.close();
-                result = true;
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-        return result;
-    }
-
-    @Override
-    public boolean insert(String sql) {
-        // TODO Auto-generated method stub
-        return false;
     }
 
     @Override
     public boolean update(String sql) {
-        // TODO Auto-generated method stub
-        return false;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
     public boolean delete(String sql) {
-        return false;
+        boolean result = true;
+
+        try {
+
+            if (connection != null && !connection.isClosed()) {
+
+                PreparedStatement statement = this.connection.prepareStatement(sql);
+
+                statement.executeUpdate();
+
+            } else {
+                throw new Exception("Database não conectado.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro na execução da exclusão");
+            e.printStackTrace();
+            result = false;
+        }
+
+        return result;
     }
+
+    @Override
+    public boolean disconnect() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
