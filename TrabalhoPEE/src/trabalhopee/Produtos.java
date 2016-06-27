@@ -5,6 +5,14 @@
  */
 package trabalhopee;
 
+import java.sql.Connection;
+import org.neo4j.driver.v1.AuthTokens;
+import org.neo4j.driver.v1.Config;
+import org.neo4j.driver.v1.Driver;
+import org.neo4j.driver.v1.GraphDatabase;
+import org.neo4j.driver.v1.Record;
+import org.neo4j.driver.v1.Session;
+import org.neo4j.driver.v1.StatementResult;
 import trabalhopee.database.MySQLDatabase;
 import trabalhopee.database.Neo4JDatabase;
 import trabalhopee.database.PostGreSQLDatabase;
@@ -47,7 +55,7 @@ public class Produtos {
         long total = 0;
 
         postgre.connect();
-        for (int i = 1; i < 50000; i++) {
+        for (int i = 1; i < 5000; i++) {
             long start = System.currentTimeMillis();
             postgre.insert("INSERT INTO produtos (nome, descricao, valor) "
                     + "VALUES ('PRODUTO 1','AQUI VAI A DESCRIÇÃO DO PRODUTO','10.00')");
@@ -60,14 +68,19 @@ public class Produtos {
     public long inserirNeo4J() {
         long total = 0;
 
-        neo4j.connect();
-//        for (int i = 1; i < 50000; i++) {
-//            long start = System.currentTimeMillis();
-//            postgre.insert("INSERT INTO produtos (nome, descricao, valor) "
-//                    + "VALUES ('PRODUTO 1','AQUI VAI A DESCRIÇÃO DO PRODUTO','10.00')");
-//            total += System.currentTimeMillis() - start;
-//        }
+        Driver driver = GraphDatabase.driver("bolt://localhost", AuthTokens.basic("neo4j", "123456"));
+        Session session = driver.session();
 
+        for (int i = 1; i < 5000; i++) {
+            long start = System.currentTimeMillis();
+            session.run("CREATE (a:produtos {nome:'PRODUTO 1', "
+                    + "descricao:'AQUI VAI A DESCRIÇÃO DO PRODUTO', valor:'10.00'})");
+            total += System.currentTimeMillis() - start;
+        }
+
+        session.close();
+        driver.close();
+        
         return total / 1000;
     }
 }
