@@ -17,33 +17,12 @@ import java.sql.ResultSet;
  */
 public class PostGreSQLDatabase implements Database{
 
-    private String username;
-
-    private String password;
-
-    private String databaseName;
-
-    private String host;
-
-    private int port;
-
-    private Connection connection;    
-
-    public PostGreSQLDatabase(String username, String password, String databaseName, String host, int port) {
-        this.username = username;
-        this.password = password;
-        this.databaseName = databaseName;
-        this.host = host;
-        this.port = port;
-    }
-
-    public PostGreSQLDatabase(String username, String password, String databaseName, String host) {
-        this(username, password, databaseName, host, 3306);
-    }
-
-    public PostGreSQLDatabase(String username, String password, String databaseName) {
-        this(username, password, databaseName, "localhost", 3306);
-    }
+    private final String username = "postgres";
+    private final String password = "123456";
+    private final String database = "pee";
+    private final String host = "localhost";
+    private final String port = "5432";
+    private Connection connection; 
 
     public boolean connect() {
 
@@ -51,7 +30,7 @@ public class PostGreSQLDatabase implements Database{
 
         try {
 
-            Class.forName("org.postgresql.driver");
+            Class.forName("org.postgresql.Driver");
 
             if (connection != null) {
                 connection.close();
@@ -59,10 +38,11 @@ public class PostGreSQLDatabase implements Database{
 
             this.connection
                     = DriverManager.getConnection(
-                            "jdbc:postgresql://" + this.host + ":" + port + "/" + this.databaseName,
+                            "jdbc:postgresql://" + this.host + ":" + port + "/" + this.database,
                             this.username, this.password);
 
         } catch (Exception e) {
+            System.out.println("Erro de conexão");
             result = false;
             e.printStackTrace();
         }
@@ -70,27 +50,9 @@ public class PostGreSQLDatabase implements Database{
         return result;
     }
 
+    @Override
     public ResultSet query(String sql) {
-
-        ResultSet result = null;
-
-        try {
-
-            if (connection != null && !connection.isClosed()) {
-
-                PreparedStatement statement = this.connection.prepareStatement(sql);
-
-                result = statement.executeQuery();
-
-            } else {
-                throw new Exception("Database is not connected.");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return result;
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public boolean disconnect() {
@@ -115,8 +77,27 @@ public class PostGreSQLDatabase implements Database{
 
     @Override
     public boolean insert(String sql) {
-        // TODO Auto-generated method stub
-        return false;
+        boolean result = true;
+
+        try {
+
+            if (connection != null && !connection.isClosed()) {
+
+                PreparedStatement statement = this.connection.prepareStatement(sql);
+
+                statement.executeUpdate();
+
+            } else {
+                throw new Exception("Database não conectado.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro na execução da inserção");
+            e.printStackTrace();
+            result = false;
+        }
+
+        return result;
     }
 
     @Override

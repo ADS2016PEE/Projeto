@@ -10,48 +10,30 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-
 /**
  *
  * @author Cleyton
  */
 public class Neo4JDatabase implements Database{
 
-    private String username;
-
-    private String password;
-
-    private String databaseName;
-
-    private String host;
-
-    private int port;
-
-    private Connection connection;    
-
-    public Neo4JDatabase(String username, String password, String databaseName, String host, int port) {
-        this.username = username;
-        this.password = password;
-        this.databaseName = databaseName;
-        this.host = host;
-        this.port = port;
-    }
-
-    public Neo4JDatabase(String username, String password, String databaseName, String host) {
-        this(username, password, databaseName, host, 3306);
-    }
-
-    public Neo4JDatabase(String username, String password, String databaseName) {
-        this(username, password, databaseName, "localhost", 3306);
-    }
+    private final String username = "neo4j";
+    private final String password = "neo4j";
+    private final String database = "default.graphdb";
+    private final String host = "localhost";
+    private final String port = "7474";
+    private Connection connection;
+    
 
     public boolean connect() {
 
         boolean result = true;
+        
+        
 
         try {
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("org.neo4j.jdbc.Driver");
+
 
             if (connection != null) {
                 connection.close();
@@ -59,7 +41,7 @@ public class Neo4JDatabase implements Database{
 
             this.connection
                     = DriverManager.getConnection(
-                            "jdbc:mariadb://" + this.host + ":" + port + "/" + this.databaseName,
+                            "jdbc:neo4j://" + this.host + ":" + port + "/" + this.database,
                             this.username, this.password);
 
         } catch (Exception e) {

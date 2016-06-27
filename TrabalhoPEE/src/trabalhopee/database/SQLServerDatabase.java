@@ -29,22 +29,6 @@ public class SQLServerDatabase implements Database{
 
     private Connection connection;    
 
-    public SQLServerDatabase(String username, String password, String databaseName, String host, int port) {
-        this.username = username;
-        this.password = password;
-        this.databaseName = databaseName;
-        this.host = host;
-        this.port = port;
-    }
-
-    public SQLServerDatabase(String username, String password, String databaseName, String host) {
-        this(username, password, databaseName, host, 3306);
-    }
-
-    public SQLServerDatabase(String username, String password, String databaseName) {
-        this(username, password, databaseName, "localhost", 3306);
-    }
-
     public boolean connect() {
 
         boolean result = true;

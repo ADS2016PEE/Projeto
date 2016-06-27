@@ -17,25 +17,12 @@ import java.sql.ResultSet;
  */
 public class MySQLDatabase implements Database{
 
-    private String username;
-
-    private String password;
-
-    private String databaseName;
-
-    private String host;
-
-    private int port;
-
-    private Connection connection;    
-
-    public MySQLDatabase(String username, String password, String databaseName, String host, int port) {
-        this.username = username;
-        this.password = password;
-        this.databaseName = databaseName;
-        this.host = host;
-        this.port = port;
-    }
+    private final String username = "root";
+    private final String password = "123456";
+    private final String database = "pee";
+    private final String host = "localhost";
+    private final String port = "3306";
+    private Connection connection;
 
     public boolean connect() {
 
@@ -51,7 +38,7 @@ public class MySQLDatabase implements Database{
 
             this.connection
                     = DriverManager.getConnection(
-                            "jdbc:mysql://" + this.host + ":" + port + "/" + this.databaseName,
+                            "jdbc:mysql://" + this.host + ":" + port + "/" + this.database,
                             this.username, this.password);
 
         } catch (Exception e) {
