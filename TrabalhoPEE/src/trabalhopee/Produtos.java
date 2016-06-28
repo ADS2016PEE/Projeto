@@ -5,14 +5,10 @@
  */
 package trabalhopee;
 
-import java.sql.Connection;
 import org.neo4j.driver.v1.AuthTokens;
-import org.neo4j.driver.v1.Config;
 import org.neo4j.driver.v1.Driver;
 import org.neo4j.driver.v1.GraphDatabase;
-import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.Session;
-import org.neo4j.driver.v1.StatementResult;
 import trabalhopee.database.MySQLDatabase;
 import trabalhopee.database.Neo4JDatabase;
 import trabalhopee.database.PostGreSQLDatabase;
@@ -82,5 +78,13 @@ public class Produtos {
         driver.close();
         
         return total / 1000;
+    }
+    
+    public long inserirSQLServer(){
+        long total = 0;
+        
+        sqlserver.connect();
+        
+        return total;
     }
 }

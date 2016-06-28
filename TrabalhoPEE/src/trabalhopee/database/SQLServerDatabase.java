@@ -17,16 +17,11 @@ import java.sql.ResultSet;
  */
 public class SQLServerDatabase implements Database{
 
-    private String username;
-
-    private String password;
-
-    private String databaseName;
-
-    private String host;
-
-    private int port;
-
+    private final String username = "sa";
+    private final String password = "123456";
+    private final String database = "pee";
+    private final String host = "CLEYTONNB";
+    private final String port = "3306";
     private Connection connection;    
 
     public boolean connect() {
@@ -35,7 +30,7 @@ public class SQLServerDatabase implements Database{
 
         try {
 
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 
             if (connection != null) {
                 connection.close();
@@ -43,7 +38,7 @@ public class SQLServerDatabase implements Database{
 
             this.connection
                     = DriverManager.getConnection(
-                            "jdbc:mariadb://" + this.host + ":" + port + "/" + this.databaseName,
+                            "jdbc:sqlserver://" + this.host + "/" + this.database,
                             this.username, this.password);
 
         } catch (Exception e) {
