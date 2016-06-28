@@ -84,7 +84,12 @@ public class Produtos {
         long total = 0;
         
         sqlserver.connect();
-        
-        return total;
+        for (int i = 1; i < 5000; i++) {
+            long start = System.currentTimeMillis();
+            sqlserver.insert("INSERT INTO produtos (nome, descricao, valor) "
+                    + "VALUES ('PRODUTO 1','AQUI VAI A DESCRIÇÃO DO PRODUTO','10.00')");
+            total += System.currentTimeMillis() - start;
+        }
+        return total / 1000;
     }
 }

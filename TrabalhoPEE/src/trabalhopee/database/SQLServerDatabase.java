@@ -21,7 +21,7 @@ public class SQLServerDatabase implements Database{
     private final String password = "123456";
     private final String database = "pee";
     private final String host = "CLEYTONNB";
-    private final String port = "3306";
+    private final String port = "1433";
     private Connection connection;    
 
     public boolean connect() {
@@ -38,7 +38,7 @@ public class SQLServerDatabase implements Database{
 
             this.connection
                     = DriverManager.getConnection(
-                            "jdbc:sqlserver://" + this.host + "/" + this.database,
+                            "jdbc:sqlserver://" + this.host + ":" + this.port + ";databaseName=" + this.database,
                             this.username, this.password);
 
         } catch (Exception e) {
@@ -94,8 +94,27 @@ public class SQLServerDatabase implements Database{
 
     @Override
     public boolean insert(String sql) {
-        // TODO Auto-generated method stub
-        return false;
+        boolean result = true;
+
+        try {
+
+            if (connection != null && !connection.isClosed()) {
+
+                PreparedStatement statement = this.connection.prepareStatement(sql);
+
+                statement.executeUpdate();
+
+            } else {
+                throw new Exception("Database não conectado.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Erro na execução da inserção");
+            e.printStackTrace();
+            result = false;
+        }
+
+        return result;
     }
 
     @Override
