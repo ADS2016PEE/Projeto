@@ -10,14 +10,16 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         System.out.println("Iniciando análise...");
-        int i = 0;
+        
         Produtos produto = new Produtos();
-//        for (int i = 0; i < 30; i++) {
+        
+        for (int i = 0; i < 30; i++){
+            System.out.println("Teste " + (i+1));
             tempo[i][0] = produto.inserirMySQL();
             tempo[i][1] = produto.inserirPostGreSQL();
             tempo[i][2] = produto.inserirNeo4J();
             tempo[i][3] = produto.inserirSQLServer();
-//        }
+        }
         
         gerarAnalise();
         
